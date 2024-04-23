@@ -12,3 +12,4 @@
 
 - React
 - Antd-mobile
+- postcss-pxtorem 和 amfe-flexible

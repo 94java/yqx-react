@@ -1,0 +1,167 @@
+.recommend{
+    // 轮播图
+    .recommend-swiper{
+        border-radius: 6px;
+        .swiper-item{
+            position: relative;
+            height: 180px;
+            .swiper-img{
+                height: 100%;
+                width: 100%;
+            }
+        }
+        // 自定义轮播图指示器
+        .swiper-indicator{
+            font-size: 14px;
+            color: #fff;
+            .swiper-desc{
+                position: absolute;
+                bottom:0px;
+                padding: 5px;
+                width: 100%;
+                height: 20px;
+                line-height: 20px;
+                background: linear-gradient(0deg, rgba(0, 0, 0, .65), transparent);
+            }
+            .swiper-num{
+                position: absolute;
+                top: 6px;
+                right: 6px;
+                background: rgba(0, 0, 0, 0.3);
+                padding: 4px 8px;
+                border-radius: 4px;
+                user-select: none;
+            }
+        }
+    }
+
+    // 活跃用户
+    .user-item{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        margin-right: 10px;
+        flex-shrink: 0;
+        text-align: center;
+        font-size: 14px;
+        .adm-avatar{
+            margin: auto;
+            --border-radius: 50%;
+            --size:56px;
+            margin-bottom: 10px;
+        }
+    }
+
+
+    // 精选视频
+    .recommend-video{
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        &::after {
+            content: '';
+            width: 48%;
+        }
+        .video-card{
+            display: flex;
+            flex-direction: column;
+            width: 48%;
+            height: 150px;
+            border: 1px solid #e8e8e8;
+            margin-bottom: 8px;
+            padding: 4px 0;
+            .adm-card-body{
+                padding: 0 4px;
+            }
+            &:hover{
+                box-shadow: 10px 5px 5px #e8e8e8;
+            }
+            .video-pic{
+                height: 82px;
+                border-radius: 6px;
+            }
+            .video-title{
+                height: 36px;
+                font-size: 14px;
+                margin: 8px 0;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2; /* 这里的3表示最多显示3行 */
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .video-meta{
+                font-size: 13px;
+                color: rgba(0,0,0,.45);
+                .adm-divider{
+                    border-color: var(--adm-color-light);
+                    margin: 0 6px;
+                }
+            }
+        }
+    }
+
+    // 精选笔记
+    .recommend-note{
+        display: flex;
+        flex-direction: column;
+        .note-card{
+            display: flex;
+            flex-direction: column;
+            width: 93%;
+            height: 175px;
+            border: 1px solid #e8e8e8;
+
+            .adm-card-body{
+                padding: 0;
+            }
+
+            .header{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 14px;
+                padding: 0 0 5px 0;
+                border-bottom: 1px solid var(--adm-color-border);
+                .info{
+                    display: flex;
+                    align-items: center;
+                    .adm-avatar{
+                        margin-right: 10px;
+                        --border-radius:50%;
+                        --size:36px;
+                    }
+                }
+                .more{
+                    font-size: 18px;
+                }
+            }
+            .content{
+                display: flex;
+                .note-pic{
+                    flex: 1;
+                    height: 105px;
+                    margin-right: 10px;
+                    border-radius: 8px;
+                }
+                .note-info{
+                    width: 50%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    font-size: 13px;
+
+                    .title{
+                        font-size: 16px;
+                        margin-bottom: 6px;
+                    }
+
+                    .desc,.note-meta{
+                        color: rgba(0,0,0,.45);
+                    }
+                }
+            }
+        }
+    }
+
+}
