@@ -1,0 +1,37 @@
+.video-card{
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+    height: 150px;
+    border: 1px solid #e8e8e8;
+    margin-bottom: 8px;
+    padding: 4px 0;
+    .adm-card-body{
+        padding: 0 4px;
+    }
+    &:hover{
+        box-shadow: 10px 5px 5px #e8e8e8;
+    }
+    .video-pic{
+        height: 82px;
+        border-radius: 6px;
+    }
+    .video-title{
+        height: 36px;
+        font-size: 14px;
+        margin: 8px 0;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; /* 这里的3表示最多显示3行 */
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .video-meta{
+        font-size: 13px;
+        color: rgba(0,0,0,.45);
+        .adm-divider{
+            border-color: var(--adm-color-light);
+            margin: 0 6px;
+        }
+    }
+}

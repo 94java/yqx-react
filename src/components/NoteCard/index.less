@@ -1,0 +1,81 @@
+.note-card{
+    display: flex;
+    flex-direction: column;
+    width: 93%;
+    height: 175px;
+    border: 1px solid #e8e8e8;
+    margin-bottom: 8px;
+
+    .adm-card-body{
+        padding: 0;
+    }
+
+    .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        padding: 0 0 5px 0;
+        border-bottom: 1px solid var(--adm-color-border);
+        .info{
+            display: flex;
+            align-items: center;
+            .adm-avatar{
+                margin-right: 10px;
+                --border-radius:50%;
+                --size:36px;
+            }
+        }
+        .more{
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            .time{
+                font-size: 12px;
+                margin-right: 20px;
+            }
+        }
+    }
+    .content{
+        display: flex;
+        .note-pic{
+            flex: 1;
+            height: 105px;
+            margin-right: 10px;
+            border-radius: 8px;
+        }
+        .note-info{
+            width: 52%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 13px;
+
+            .title{
+                font-size: 16px;
+                margin-bottom: 4px;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1; /* 这里的3表示最多显示3行 */
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .desc,.note-meta{
+                color: rgba(0,0,0,.45);
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3; /* 这里的3表示最多显示3行 */
+                overflow: hidden;
+                text-overflow: ellipsis;
+                .adm-divider-vertical{
+                    margin: 0 6px;
+                }
+            }
+            .note-meta{
+                text-align: right;
+                margin-top: 6px;
+            }
+        }
+    }
+}
