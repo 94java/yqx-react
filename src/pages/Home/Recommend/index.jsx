@@ -10,7 +10,7 @@ import NoteCard from '../../../components/NoteCard'
 
 
 export default function Recommend() {
-  const [{swiperData,activeUsers,recommendVideos,recommendNotes},setState] = useState({
+  const [{swiperData,activeUsers,recommendVideos,recommendNotes}] = useState({
     // 轮播图数据
     swiperData: [
       {title:'【学习笔记】文章导读',img:'https://www.jiusi.cc/update/study_big.png'},
@@ -174,12 +174,12 @@ export default function Recommend() {
       </Wrap>
 
       {/* 精选视频 */}
-      <Wrap title="精选视频" more className="recommend-video">
+      <Wrap title="精选视频" more className="recommend-video" to='/home/video'>
         {recommendVideoItems}
       </Wrap>
 
       {/* 精选笔记 */}
-      <Wrap title="精选笔记" more className="recommend-note">
+      <Wrap title="精选笔记" more className="recommend-note" to='/home/note'>
         {recommendNoteItems}
       </Wrap>
     </div>

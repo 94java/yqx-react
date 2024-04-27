@@ -34,11 +34,15 @@ export default function Home() {
         },
     ]
 
+    function goSearch(){
+        navigate('/search')
+    }
+
   return (
     <div className='home'>
         {/* 顶部导航栏 */}
         <div className="nav">
-            <div className="search">
+            <div className="search" onClick={goSearch}>
                 <SearchOutline />
                 <span>请输入搜索关键词</span>
             </div>

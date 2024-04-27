@@ -8,6 +8,8 @@ import Recommend from "../pages/Home/Recommend";
 import Note from "../pages/Home/Note";
 import Video from "../pages/Home/Video";
 import Resource from "../pages/Home/Resource";
+import Search from "../pages/Home/Search";
+import QuestionDetail from "../pages/QuestionBank/Detail";
 
 const routes = [
     {
@@ -31,7 +33,7 @@ const routes = [
                         element: <Video/>
                     },
                     {
-                        path: 'Resource',
+                        path: 'resource',
                         element: <Resource/>
                     },
                     {
@@ -42,7 +44,7 @@ const routes = [
             },
             {
                 path: 'question-bank',
-                element: <QuestionBank/>
+                element: <QuestionBank/>,
             },
             {
                 path: 'news',
@@ -57,6 +59,14 @@ const routes = [
                 element: <Navigate to='/home'/>
             }
         ]
+    },
+    {
+        path: '/search',
+        element: <Search/>
+    },
+    {
+        path:'/question-bank/detail',
+        element: <QuestionDetail/>
     }
 ]
 

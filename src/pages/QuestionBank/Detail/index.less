@@ -1,0 +1,89 @@
+.question-bank-detail{
+    // navbar
+    .adm-nav-bar-back-arrow{
+        font-size: 18px;
+    }
+    // 题库信息
+    .adm-card{
+        padding: 0;
+        // 卡片体区域
+        .bank-info{
+            // height: 240px;
+            margin-top: 8px;
+            border: 1px solid #ebedf0;
+            border-radius: 4px;
+            font-size: 14px;
+            padding: 8px 0 0 0;
+            // 题库封面
+            .bank-pic{
+                height: 152px;
+                padding: 0 10px;
+                border-radius: 6px;
+            }
+            // 基础信息
+            .base-info{
+                margin: 10px;
+                line-height: 26px;
+                .desc{
+                    line-height: 20px;
+                }
+                // 题库标题
+                .bank-title{
+                    font-size: 18px;
+                }
+                div > .title{
+                    font-weight: 700;
+                    margin-right: 8px;
+                }
+            }
+            // meta信息
+            .meta{
+                color: var(--adm-color-weak);
+                .antd-mobile-icon{
+                    margin-left: 10px;
+                    &:first-child{
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+        // 自由练习模式按钮卡片
+        .bank-btn{
+            margin: 14px 0;
+            border: 1px solid #ebedf0;
+            border-radius: 4px;
+            padding: 10px 0 0 0;
+            // 标题
+            >.title{
+                font-size: 17px;
+                font-weight: 700;
+                text-align: center;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #ebedf0;
+            }
+            // 按钮组
+            .btns{
+                display: flex;
+                justify-content: space-between;
+                font-size: 15px;
+                color:rgba(0, 0, 0, .65);
+                .btn-item{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    flex: 1;
+                    border-right: 1px solid #ebedf0;
+                    padding: 20px 0;
+                    &:last-child{
+                        border-right: 0;
+                    }
+                    .antd-mobile-icon{
+                        font-size: 22px;
+                        margin-bottom: 6px;
+                    }
+                }
+            }
+        }
+    }
+    
+}

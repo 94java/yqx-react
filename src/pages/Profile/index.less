@@ -1,0 +1,79 @@
+.profile{
+    // 基本信息
+    .base-info{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 16px;
+        &:active{
+            background-color: #ebedf0;
+        }
+        padding: 10px 0;
+        .user{
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            padding-left: 16px;
+            >.adm-avatar{
+                --border-radius: 50%;
+                --size:48px;
+                margin-right: 10px;
+            }
+        }
+        .user-home{
+            color: #969799;
+            font-size: 16px;
+            &:active{
+                background-color: none;
+            }
+        }
+        
+    }
+    // 统计数据
+    .stats{
+        height: 58px;
+        margin: 10px 0;
+        // border: 1px solid #ebedf0;
+        // border-left: none;
+        // border-right: none;
+        border-radius: 6px;
+        >.adm-grid-item{
+            text-align: center;
+            font-size: 13px;
+            width: 100%;
+            border-right: 1px solid #ebedf0;
+            margin: auto;
+            &:last-child{
+                border-right: none;
+            }
+            >div{
+                font-weight: 700;
+                margin-bottom: 3px;
+            }
+        }
+    }
+    // 用户菜单
+    .user-nav{
+        height: 58px;
+        font-size: 26px;
+        text-align: center;
+        margin: auto;
+        .adm-grid-item{
+            border-right: 1px solid #ebedf0;
+            &:last-child{
+                border-right: 0;
+            }
+            >div{
+                font-size: 13px;
+                margin-top: 6px;
+            }
+        }
+    }
+
+    // 更多功能
+    .user-more{
+        .adm-list-item-content-main{
+            font-size: 14px;
+        }
+    }
+}
