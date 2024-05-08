@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "amfe-flexible": "^2.2.1",
     "antd-mobile": "^5.35.0",
+    "axios": "^1.6.8",
     "craco-less": "^3.0.1",
     "less": "^4.2.0",
     "postcss-pxtorem": "^6.1.0",

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { SearchOutline } from 'antd-mobile-icons'
-import { Avatar, Tabs } from 'antd-mobile'
+import { Avatar, Tabs,Button } from 'antd-mobile'
 
 import './index.less'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -14,6 +14,7 @@ export default function Home() {
     const setRouteActive = (value) => {
         navigate(value)
     }
+
 
     const tabs = [
         {
@@ -46,8 +47,18 @@ export default function Home() {
                 <SearchOutline />
                 <span>请输入搜索关键词</span>
             </div>
-            <div className="avatar">
+            {/* <div className="avatar">
                 <Avatar src='' />
+              </div> */}
+            <div className="avatar">
+            <Button 
+                size='small'
+                onClick={() => {
+                    alert('hello.')
+                }}
+            >
+                登录
+            </Button>
             </div>
         </div>
 
