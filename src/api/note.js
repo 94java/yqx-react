@@ -8,3 +8,12 @@ export function getNotePage(data) {
     data: { ...data, status: "1" },
   });
 }
+
+// 获取笔记详情
+export function getNoteById(id) {
+  return request({
+    url: `/note/get`, //请求的接口地址
+    method: "get", //请求的方式
+    params: { id },
+  });
+}

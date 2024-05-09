@@ -1,12 +1,18 @@
-import React from 'react'
-import { Image,Avatar,Card,Divider  } from 'antd-mobile'
-import { EyeOutline, LikeOutline,MessageOutline,MoreOutline } from 'antd-mobile-icons'
+import React from "react";
+import { Image, Avatar, Card, Divider } from "antd-mobile";
+import {
+  EyeOutline,
+  LikeOutline,
+  MessageOutline,
+  MoreOutline,
+} from "antd-mobile-icons";
 
-import './index.less'
-import { dateFtt } from '../../utils/date'
-
+import "./index.less";
+import { dateFtt } from "../../utils/date";
+import { useNavigate } from "react-router-dom";
 export default function NoteCard({ data }) {
-  
+  const navigate = useNavigate();
+
   return (
     <Card className="note-card">
       <div className="header">
@@ -21,7 +27,12 @@ export default function NoteCard({ data }) {
           <MoreOutline />
         </div>
       </div>
-      <div className="content">
+      <div
+        className="content"
+        onClick={() => {
+          navigate("/note/details?id=" + data.id);
+        }}
+      >
         <Image className="note-pic" src={data?.coverImg} />
         <div className="note-info">
           <div className="title">{data.title}</div>

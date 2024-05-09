@@ -10,64 +10,74 @@ import Video from "../pages/Home/Video";
 import Resource from "../pages/Home/Resource";
 import Search from "../pages/Home/Search";
 import QuestionDetail from "../pages/QuestionBank/Detail";
+import Details from "../pages/Home/Note/Details";
+import VideoDetails from "../pages/Home/Video/Details";
 
 const routes = [
-    {
-        path: '/',
-        element: <Layout />,
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "home",
+        element: <Home />,
         children: [
-            {
-                path: 'home',
-                element: <Home/>,
-                children: [
-                    {
-                        path: 'recommend',
-                        element: <Recommend/>
-                    },
-                    {
-                        path: 'note',
-                        element: <Note/>
-                    },
-                    {
-                        path: 'video',
-                        element: <Video/>
-                    },
-                    {
-                        path: 'resource',
-                        element: <Resource/>
-                    },
-                    {
-                        path: '',
-                        element: <Navigate to="/home/recommend"/>
-                    }
-                ]
-            },
-            {
-                path: 'question-bank',
-                element: <QuestionBank/>,
-            },
-            {
-                path: 'news',
-                element: <News/>
-            },
-            {
-                path: 'profile',
-                element: <Profile/>
-            },
-            {
-                path: '/',
-                element: <Navigate to='/home'/>
-            }
-        ]
-    },
-    {
-        path: '/search',
-        element: <Search/>
-    },
-    {
-        path:'/question-bank/detail',
-        element: <QuestionDetail/>
-    }
-]
+          {
+            path: "recommend",
+            element: <Recommend />,
+          },
+          {
+            path: "note",
+            element: <Note />,
+          },
+          {
+            path: "video",
+            element: <Video />,
+          },
+          {
+            path: "resource",
+            element: <Resource />,
+          },
+          {
+            path: "",
+            element: <Navigate to="/home/recommend" />,
+          },
+        ],
+      },
+      {
+        path: "question-bank",
+        element: <QuestionBank />,
+      },
+      {
+        path: "news",
+        element: <News />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "/",
+        element: <Navigate to="/home" />,
+      },
+    ],
+  },
+  {
+    path: "/search",
+    element: <Search />,
+  },
+  {
+    path: "/note/details",
+    element: <Details />,
+  },
+  {
+    path: "/video/details",
+    element: <VideoDetails />,
+  },
+  {
+    path: "/question-bank/detail",
+    element: <QuestionDetail />,
+  },
+];
 
 export default routes

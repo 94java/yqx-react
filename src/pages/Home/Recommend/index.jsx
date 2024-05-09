@@ -7,19 +7,24 @@ import LateralSlip from "../../../components/LateralSlip";
 import "./index.less";
 import VideoCard from "../../../components/VideoCard";
 import NoteCard from "../../../components/NoteCard";
-import { getActivityUser, getRecommendNote, getRecommendVideo, getSwipper } from "../../../api/home";
+import {
+  getActivityUser,
+  getRecommendNote,
+  getRecommendVideo,
+  getSwipper,
+} from "../../../api/home";
+import { useNavigate } from "react-router-dom";
 
 export default function Recommend() {
+  const navigate = useNavigate();
   // 轮播图数据
-  const [swiperData, setSwiperData] = useState([{id:'1'}]);
+  const [swiperData, setSwiperData] = useState([{ id: "1" }]);
   // 活跃用户数据
   const [activeUsers, setActiveUsers] = useState([{ id: "1" }]);
   // 精选视频数据
   const [recommendVideos, setRecommendVideos] = useState([{ id: "1" }]);
   // 精选笔记数据
-  const [recommendNotes, setRecommendNotes] = useState([
-    {id:1}
-  ]);
+  const [recommendNotes, setRecommendNotes] = useState([{ id: 1 }]);
 
   // 钩子函数
   useEffect(() => {
@@ -27,20 +32,20 @@ export default function Recommend() {
       setSwiperData(resp.data);
     });
     getRecommendVideo().then((resp) => {
-      setRecommendVideos(resp.data)
+      setRecommendVideos(resp.data);
     });
-    getActivityUser().then(resp => {
-      setActiveUsers(resp.data)
-    })
-    getRecommendNote().then(resp => {
-      setRecommendNotes(resp.data)
+    getActivityUser().then((resp) => {
+      setActiveUsers(resp.data);
+    });
+    getRecommendNote().then((resp) => {
+      setRecommendNotes(resp.data);
       // console.log(resp.data)
-    })
-  },[]);
+    });
+  }, []);
 
   // 轮播图
   const swiperItems = swiperData?.map((item) => (
-    <Swiper.Item key={item.id}>
+    <Swiper.Item key={item.id} onClick={() => {navigate(`/video/details?id=${item.id}`)}}>
       <div className="swiper-item">
         <Image className="swiper-img" src={item.coverImg} alt="" />
       </div>

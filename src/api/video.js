@@ -8,3 +8,11 @@ export function getVideoPage(data) {
     data: { ...data, status: "1" },
   });
 }
+// 获取视频详情
+export function getVideoById(id) {
+  return request({
+    url: `/video/get`, //请求的接口地址
+    method: "get", //请求的方式
+    params: { id },
+  });
+}
