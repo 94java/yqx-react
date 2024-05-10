@@ -45,7 +45,12 @@ export default function Recommend() {
 
   // 轮播图
   const swiperItems = swiperData?.map((item) => (
-    <Swiper.Item key={item.id} onClick={() => {navigate(`/video/details?id=${item.id}`)}}>
+    <Swiper.Item
+      key={item.id}
+      onClick={() => {
+        navigate(`/video/details?id=${item.id}`);
+      }}
+    >
       <div className="swiper-item">
         <Image className="swiper-img" src={item.coverImg} alt="" />
       </div>
@@ -54,7 +59,13 @@ export default function Recommend() {
 
   // 活跃用户
   const activeUserItems = activeUsers?.map((item) => (
-    <div className="user-item" key={item.id}>
+    <div
+      className="user-item"
+      key={item.id}
+      onClick={() => {
+        navigate("/user/home?id=" + item.id);
+      }}
+    >
       <Avatar src={item.avatar} />
       <div className="username">{item.nickname}</div>
     </div>

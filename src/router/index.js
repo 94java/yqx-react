@@ -12,6 +12,7 @@ import Search from "../pages/Home/Search";
 import QuestionDetail from "../pages/QuestionBank/Detail";
 import Details from "../pages/Home/Note/Details";
 import VideoDetails from "../pages/Home/Video/Details";
+import UserDetails from "../pages/Profile/Home";
 import Login from "../pages/Login";
 import Exercise from "../pages/QuestionBank/Exercise";
 
@@ -72,6 +73,7 @@ const routes = [
     path: "/search",
     element: <Search />,
   },
+
   {
     path: "/note/details",
     element: <Details />,
@@ -88,6 +90,10 @@ const routes = [
     path: "/question-bank/exercise",
     element: <Exercise />,
   },
+  {
+    path: "/user/home",
+    element: <UserDetails />,
+  },
 ];
 
-export default routes
+export default routes;

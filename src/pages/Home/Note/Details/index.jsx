@@ -14,7 +14,7 @@ import {
 } from "antd-mobile";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  LinkOutline,
+  CheckOutline,
   EyeOutline,
   LikeOutline,
   ContentOutline,
@@ -43,6 +43,8 @@ import mermaid from "@bytemd/plugin-mermaid";
 import { dateFtt } from "../../../../utils/date";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getCommentList, saveComment } from "../../../../api/comment";
+import { changeFollow, getFollowCount } from "../../../../api/follow";
+import { changeLikes } from "../../../../api/likes";
 
 const plugins = [
   gfm(),
@@ -62,6 +64,8 @@ export default function Details() {
   const id = param.get("id");
   const curUser = JSON.parse(localStorage.getItem("userInfo"));
   const [commentList, setCommentList] = useState([]);
+  const [isFollow, setIsFollow] = useState(false);
+  const [isLike, setIsLike] = useState(false);
   const formRef = useRef();
 
   const getComments = () => {
@@ -70,9 +74,24 @@ export default function Details() {
     });
   };
   useEffect(() => {
+    // 返回顶部
+    window.scrollTo(0, 0);
+    // 获取笔记信息
     getNoteById(id).then((resp) => {
-      setData(resp.data);
+      const respData = resp.data;
+      setData(respData);
+      // 获取关注信息
+      getFollowCount({ uid: curUser?.id, refUid: respData.user?.id }).then(
+        (resp) => {
+          if (resp.data > 0) {
+            setIsFollow(true);
+          }
+        }
+      );
+      // 获取点赞信息
+      setIsLike(resp.data.like);
     });
+    // 获取评论信息
     getComments();
   }, []);
   return (
@@ -123,16 +142,46 @@ export default function Details() {
         </div>
       </div>
       <Card bodyClassName="user-info">
-        <div className="info">
+        <div
+          className="info"
+          onClick={() => {
+            navigate("/user/home?id=" + data.user?.id);
+          }}
+        >
           <Avatar src={data.user?.avatar} />
           {data.user?.nickname}
         </div>
-        <div className="opt">
-          <Button shape="rounded">
-            <AddOutline />
-            <span>关注</span>
-          </Button>
-        </div>
+        {curUser?.id !== data.user?.id && (
+          <div className="opt">
+            <Button
+              shape="rounded"
+              onClick={async () => {
+                const resp = await changeFollow({
+                  uid: curUser?.id,
+                  refUid: data.user?.id,
+                });
+                if (resp.code !== 0) {
+                  // 发生错误
+                  return;
+                }
+                setIsFollow((pre) => !pre);
+                Toast.show({ content: "操作成功" });
+              }}
+            >
+              {isFollow ? (
+                <>
+                  <CheckOutline />
+                  <span>已关注</span>
+                </>
+              ) : (
+                <>
+                  <AddOutline />
+                  <span>关注</span>
+                </>
+              )}
+            </Button>
+          </div>
+        )}
       </Card>
       {/* 内容区卡片 */}
       <Card>
@@ -151,10 +200,35 @@ export default function Details() {
                 <span>打赏</span>
               </Space>
             </Button>
-            <Button shape="rounded" size="small">
+            <Button
+              shape="rounded"
+              size="small"
+              onClick={async () => {
+                const resp = await changeLikes({
+                  uid: curUser?.id,
+                  contentId: data?.id,
+                  type: "0",
+                });
+                if (resp.code !== 0) {
+                  // 发生错误
+                  return;
+                }
+                setIsLike((pre) => !pre);
+                Toast.show({ content: "操作成功" });
+              }}
+            >
               <Space>
-                <LikeOutline />
-                <span>点赞</span>
+                {isLike ? (
+                  <>
+                    <LikeOutline />
+                    <span>已点赞</span>
+                  </>
+                ) : (
+                  <>
+                    <LikeOutline />
+                    <span>点赞</span>
+                  </>
+                )}
               </Space>
             </Button>
           </div>

@@ -1,17 +1,34 @@
-import { Avatar, Button, Card, Collapse, Form, Image, List, NavBar, Tabs, TextArea, Toast } from "antd-mobile";
+import {
+  Avatar,
+  Button,
+  Card,
+  Collapse,
+  Form,
+  Image,
+  List,
+  NavBar,
+  Tabs,
+  TextArea,
+  Toast,
+} from "antd-mobile";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
-  LinkOutline,
+  AddOutline,
+  CheckOutline,
   MovieOutline,
   LikeOutline,
   ClockCircleOutline,
+  HeartFill,
+  HeartOutline,
 } from "antd-mobile-icons";
 import Xgplayer from "xgplayer-react";
 import "./index.less";
 import { getVideoById } from "../../../../api/video";
 import { dateFtt } from "../../../../utils/date";
 import { getCommentList, saveComment } from "../../../../api/comment";
+import { changeFollow, getFollowCount } from "../../../../api/follow";
+import { changeLikes } from "../../../../api/likes";
 
 export default function Details() {
   const [param] = useSearchParams();
@@ -20,6 +37,8 @@ export default function Details() {
   const [videoData, setVideoData] = useState({});
   const formRef = useRef();
   const curUser = JSON.parse(localStorage.getItem("userInfo"));
+  const [isFollow, setIsFollow] = useState(false);
+  const [isLike, setIsLike] = useState(false);
   const [commentList, setCommentList] = useState([]);
   const getComments = () => {
     getCommentList({ type: "1", contentId: id }).then((resp) => {
@@ -27,10 +46,28 @@ export default function Details() {
     });
   };
   useEffect(() => {
+    // 返回顶部
+    window.scrollTo(0, 0);
+    // 获取视频详情
     getVideoById(id).then((resp) => {
-      setVideoData(resp.data);
+      const data = resp.data;
+      setVideoData(data);
+      // 获取关注信息
+      getFollowCount({ uid: curUser?.id, refUid: data.user?.id }).then(
+        (resp) => {
+          if (resp.data > 0) {
+            setIsFollow(true);
+          }
+        }
+      );
+      // 获取点赞信息
+      setIsLike(resp.data.like);
     });
+
+    // 获取评论信息
+    getComments();
   }, []);
+
   let config = {
     id: "mse",
     url: videoData.url,
@@ -42,6 +79,7 @@ export default function Details() {
     playbackRate: [0.5, 0.75, 1, 1.5, 2], //倍速
     lang: "zh-cn",
     pip: true,
+    poster: videoData.coverImg,
   };
   let Player = null;
   return (
@@ -67,7 +105,12 @@ export default function Details() {
         <Tabs.Tab title="简介" key="fruits">
           {/* 简介 */}
           <div className="user-header">
-            <div className="user">
+            <div
+              className="user"
+              onClick={() => {
+                navigate("/user/home?id=" + videoData.user?.id);
+              }}
+            >
               <Avatar src={videoData.user?.avatar} />
               <div className="info">
                 <span>{videoData.user?.nickname}</span>
@@ -77,11 +120,67 @@ export default function Details() {
                 </div>
               </div>
             </div>
-            <div className="opt">
-              <Button size="small" shape="rounded">
-                关注
-              </Button>
-            </div>
+            {curUser?.id !== videoData.user?.id && (
+              <div className="opt">
+                <Button
+                  size="small"
+                  shape="rounded"
+                  onClick={async () => {
+                    const resp = await changeFollow({
+                      uid: curUser?.id,
+                      refUid: videoData.user?.id,
+                    });
+                    if (resp.code !== 0) {
+                      // 发生错误
+                      return;
+                    }
+                    setIsFollow((pre) => !pre);
+                    Toast.show({ content: "操作成功" });
+                  }}
+                >
+                  {isFollow ? (
+                    <>
+                      <CheckOutline />
+                      <span>已关注</span>
+                    </>
+                  ) : (
+                    <>
+                      <AddOutline />
+                      <span>关注</span>
+                    </>
+                  )}
+                </Button>
+                <Button
+                  size="small"
+                  shape="rounded"
+                  color="primary"
+                  fill="none"
+                  onClick={async () => {
+                    const resp = await changeLikes({
+                      uid: curUser?.id,
+                      contentId: videoData?.id,
+                      type: "1",
+                    });
+                    if (resp.code !== 0) {
+                      // 发生错误
+                      return;
+                    }
+                    setIsLike((pre) => !pre);
+                    Toast.show({ content: "操作成功" });
+                  }}
+                >
+                  {isLike ? (
+                    <>
+                      <HeartFill />
+                    </>
+                  ) : (
+                    <>
+                      <HeartOutline />
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
           </div>
           <div className="video-info">
             <Collapse>
@@ -106,14 +205,6 @@ export default function Details() {
           </div>
         </Tabs.Tab>
         <Tabs.Tab title="评论" key="vegetables">
-          {/* <TextArea
-            defaultValue={"北极星垂地，\n东山月满川。"}
-            showCount
-            maxLength={30}
-          />
-          <Button color="primary" fill="solid" size="small">
-            发表评论
-          </Button> */}
           {/* 发表评论 */}
           <div className="comment">
             <Card bodyClassName="comment-card">

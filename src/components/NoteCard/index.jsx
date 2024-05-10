@@ -16,7 +16,12 @@ export default function NoteCard({ data }) {
   return (
     <Card className="note-card">
       <div className="header">
-        <div className="info">
+        <div
+          className="info"
+          onClick={() => {
+            navigate("/user/home?id=" + data.user?.id);
+          }}
+        >
           <Avatar src={data.user?.avatar} />
           <span>{data.user?.nickname}</span>
         </div>
@@ -41,11 +46,11 @@ export default function NoteCard({ data }) {
             <EyeOutline />
             {data.views}
             <Divider direction="vertical" />
-            <LikeOutline />
+            <LikeOutline color={data.like ? "#1677ff" : ""} />
             {data.likes}
             <Divider direction="vertical" />
             <MessageOutline />
-            {data.commentNum}
+            {data.comments}
           </div>
         </div>
       </div>

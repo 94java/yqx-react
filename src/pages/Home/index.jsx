@@ -52,6 +52,12 @@ export default function Home() {
           {localStorage.getItem("userInfo") ? (
             <Avatar
               src={JSON.parse(localStorage.getItem("userInfo"))?.avatar}
+              onClick={() => {
+                navigate(
+                  "/user/home?id=" +
+                    JSON.parse(localStorage.getItem("userInfo"))?.id
+                );
+              }}
             />
           ) : (
             <Button

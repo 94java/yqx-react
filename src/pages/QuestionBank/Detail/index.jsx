@@ -36,9 +36,7 @@ export default function Detail() {
   };
   return (
     <div className="question-bank-detail">
-      <NavBar back="返回" onBack={() => goBack()}>
-        题库详情
-      </NavBar>
+      <NavBar back="返回" onBack={() => goBack()}>题库详情</NavBar>
       {/* 题库信息 */}
       <Card bodyClassName="bank-info">
         <Image src={bankData.coverImg} className="bank-pic" />

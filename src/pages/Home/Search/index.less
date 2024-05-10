@@ -1,13 +1,24 @@
-.search{
-    padding: 10px 0;
-    >.header{
-        display: flex;
-        align-items: center;
-        font-size: 16px;
-        margin-bottom: 10px;
-        .adm-search-bar{
-            flex: 1;
-            margin: 0 10px;
-        }
+.search {
+  padding: 10px 0;
+  > .header {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+    .adm-search-bar {
+      flex: 1;
+      margin: 0 10px;
     }
+  }
+  .content {
+    .adm-tabs-content {
+      padding: 10px 0;
+      .video-card {
+        float: left;
+        &:nth-child(even) {
+          margin-left: 8px;
+        }
+      }
+    }
+  }
 }

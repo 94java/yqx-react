@@ -44,6 +44,14 @@ export function getCurrentUser() {
   });
 }
 
+// 获取用户详情
+export function getUserById(id) {
+  return request({
+    url: `/user/get`, //请求的接口地址
+    method: "get", //请求的方式
+    params: { id },
+  });
+}
 
 // 退出登录
 export function logout() {

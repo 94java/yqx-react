@@ -19,11 +19,11 @@ export default function VideoCard({ data }) {
         <MovieOutline />
         {data.views}
         <Divider direction="vertical" />
-        <LikeOutline />
+        <LikeOutline color={data.like ? "#1677ff" : ""} />
         {data.likes}
         <Divider direction="vertical" />
         <MessageOutline />
-        {data.commentNum}
+        {data.comments}
       </div>
     </Card>
   );

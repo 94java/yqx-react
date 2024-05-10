@@ -9,6 +9,15 @@ export function getNotePage(data) {
   });
 }
 
+// 获取笔记列表
+export function getNoteList(data) {
+  return request({
+    url: `/note/list`, //请求的接口地址
+    method: "post", //请求的方式
+    data: { ...data, status: "1" },
+  });
+}
+
 // 获取笔记详情
 export function getNoteById(id) {
   return request({

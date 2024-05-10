@@ -47,7 +47,12 @@ export default function Profile() {
   return (
     <div className="profile">
       <NavBar backArrow={false}>个人信息</NavBar>
-      <div className="base-info">
+      <div
+        className="base-info"
+        onClick={() => {
+          navigate("/user/home?id=" + userData?.id);
+        }}
+      >
         <div className="user">
           <Avatar src={userData?.avatar} />
           {userData?.nickname}
@@ -142,7 +147,7 @@ export default function Profile() {
               if (resp.code === 0) {
                 Toast.show({ icon: "success", content: "退出成功" });
                 // 清除用户数据
-                dispatch(clearUserInfo())
+                dispatch(clearUserInfo());
                 // 跳转到首页
                 navigate("/");
               }
