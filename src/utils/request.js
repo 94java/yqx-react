@@ -21,7 +21,11 @@ axiosEp.interceptors.request.use(
   (config) => {
     //配置请求头，以下是一个示例，设置语言为简体中文
     config.headers.lang = "zh-CN";
-
+    // 请求头携带token信息
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Token = token;
+    }
     //对请求数据进行处理
 
     return config;

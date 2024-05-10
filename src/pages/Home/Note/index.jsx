@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CapsuleTabs } from "antd-mobile";
+import { CapsuleTabs, ErrorBlock } from "antd-mobile";
 import NoteCard from "../../../components/NoteCard";
 
 import "./index.less";
@@ -17,10 +17,9 @@ export default function Note() {
     getCategoryList({ type: "0" }).then((resp) => {
       setCategoryList(resp.data);
       setActiveCategory(resp.data[0].id);
-      
     });
   }, []);
-  
+
   // 当 activeCategory 改变时重新获取笔记
   useEffect(() => {
     getNotes({ categoryId: activeCategory });
@@ -41,9 +40,13 @@ export default function Note() {
   // 分类-笔记信息
   const items = categoryList.map((item) => (
     <CapsuleTabs.Tab title={item.name} key={item.id}>
-      {noteList?.map((noteItem) => (
-        <NoteCard data={noteItem} key={noteItem.id} />
-      ))}
+      {noteList.length > 0 ? (
+        noteList?.map((noteItem) => (
+          <NoteCard data={noteItem} key={noteItem.id} />
+        ))
+      ) : (
+        <ErrorBlock status="empty" />
+      )}
     </CapsuleTabs.Tab>
   ));
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CapsuleTabs } from "antd-mobile";
+import { CapsuleTabs, ErrorBlock } from "antd-mobile";
 import VideoCard from "../../../components/VideoCard";
 
 import "./index.less";
@@ -41,9 +41,13 @@ export default function Video() {
   // 分类-笔记信息
   const items = categoryList.map((item) => (
     <CapsuleTabs.Tab title={item.name} key={item.id}>
-      {videoList.map((noteItem) => (
-        <VideoCard data={noteItem} key={noteItem.id} />
-      ))}
+      {videoList.length > 0 ? (
+        videoList.map((noteItem) => (
+          <VideoCard data={noteItem} key={noteItem.id} />
+        ))
+      ) : (
+        <ErrorBlock status="empty" />
+      )}
     </CapsuleTabs.Tab>
   ));
 

@@ -1,5 +1,10 @@
-
 .video-details {
+  .video {
+    border-radius: 10px;
+  }
+  .xgplayer-mobile video {
+    border-radius: 10px;
+  }
   // 用户信息-顶部
   .user-header {
     display: flex;
@@ -42,28 +47,48 @@
       }
     }
     // meta信息-播放量....
-    .meta{
-        font-size: 12px;
-        color: rgba(0, 0, 0, 0.60);
-        padding: 10px;
-        >span{
-            margin-right: 8px;
-            .antd-mobile-icon{
-                margin-right: 4px;
-            }
+    .meta {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      > span {
+        margin-right: 8px;
+        .antd-mobile-icon {
+          margin-right: 4px;
         }
+      }
     }
   }
 
-  // 评论信息
-  .adm-text-area{
-    width: 90%;
-    margin: 10px 0;
-    margin-left: 2%;
-    padding: 10px;
-    border: 1px solid #e8e8e8;
-  }
-  .adm-button{
+  .adm-button {
     margin-left: 8px;
+  }
+  .comment {
+    // 评论卡片
+    .comment-card {
+      .adm-form {
+        font-size: 12px;
+        --prefix-width: 40px;
+        .adm-list-card {
+          margin: 0;
+        }
+        .adm-form-item-label {
+          font-size: 14px;
+        }
+        .adm-text-area-element {
+          font-size: 14px;
+        }
+        .adm-text-area-count {
+          font-size: 14px;
+        }
+        .comment-footer {
+          display: flex;
+          font-size: 15px;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 10px;
+        }
+      }
+    }
   }
 }

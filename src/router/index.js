@@ -12,6 +12,8 @@ import Search from "../pages/Home/Search";
 import QuestionDetail from "../pages/QuestionBank/Detail";
 import Details from "../pages/Home/Note/Details";
 import VideoDetails from "../pages/Home/Video/Details";
+import Login from "../pages/Login";
+import Exercise from "../pages/QuestionBank/Exercise";
 
 const routes = [
   {
@@ -63,6 +65,10 @@ const routes = [
     ],
   },
   {
+    path: "/login",
+    element: <Login />,
+  },
+  {
     path: "/search",
     element: <Search />,
   },
@@ -77,6 +83,10 @@ const routes = [
   {
     path: "/question-bank/detail",
     element: <QuestionDetail />,
+  },
+  {
+    path: "/question-bank/exercise",
+    element: <Exercise />,
   },
 ];
 

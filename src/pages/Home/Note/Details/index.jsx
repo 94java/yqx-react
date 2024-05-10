@@ -1,11 +1,27 @@
-import { Avatar, Button, Card, NavBar, Tag } from "antd-mobile";
-import React, { useEffect, useState } from "react";
+import {
+  Avatar,
+  Button,
+  Card,
+  Footer,
+  Form,
+  Image,
+  List,
+  NavBar,
+  Space,
+  Tag,
+  TextArea,
+  Toast,
+} from "antd-mobile";
+import React, { useEffect, useRef, useState } from "react";
 import {
   LinkOutline,
   EyeOutline,
   LikeOutline,
   ContentOutline,
   AddOutline,
+  ClockCircleOutline,
+  HandPayCircleOutline,
+  ExclamationCircleOutline,
 } from "antd-mobile-icons";
 
 import "./index.less";
@@ -26,6 +42,7 @@ import mediumZoom from "@bytemd/plugin-medium-zoom";
 import mermaid from "@bytemd/plugin-mermaid";
 import { dateFtt } from "../../../../utils/date";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { getCommentList, saveComment } from "../../../../api/comment";
 
 const plugins = [
   gfm(),
@@ -40,17 +57,32 @@ const plugins = [
 
 export default function Details() {
   const [data, setData] = useState("");
-  const navigate = useNavigate()
-  const [param] = useSearchParams()
-  const id = param.get('id');
+  const navigate = useNavigate();
+  const [param] = useSearchParams();
+  const id = param.get("id");
+  const curUser = JSON.parse(localStorage.getItem("userInfo"));
+  const [commentList, setCommentList] = useState([]);
+  const formRef = useRef();
+
+  const getComments = () => {
+    getCommentList({ type: "0", contentId: id }).then((resp) => {
+      setCommentList(resp.data);
+    });
+  };
   useEffect(() => {
     getNoteById(id).then((resp) => {
       setData(resp.data);
     });
-  });
+    getComments();
+  }, []);
   return (
     <div className="note-details">
-      <NavBar right={<LinkOutline />} back="返回" onBack={() => {navigate(-1)}}>
+      <NavBar
+        back="返回"
+        onBack={() => {
+          navigate(-1);
+        }}
+      >
         笔记详情
       </NavBar>
       <div className="header">
@@ -102,9 +134,132 @@ export default function Details() {
           </Button>
         </div>
       </Card>
+      {/* 内容区卡片 */}
       <Card>
         <Viewer value={data?.content} plugins={plugins} />
+        <div className="footer">
+          <Footer label="Ending"></Footer>
+          <div className="last-time">
+            <ClockCircleOutline />
+            最后修改:{" "}
+            {dateFtt("yyyy-MM-dd HH:mm:ss", new Date(data.updateTime))}
+          </div>
+          <div className="opt">
+            <Button shape="rounded" color="success" size="small">
+              <Space>
+                <HandPayCircleOutline />
+                <span>打赏</span>
+              </Space>
+            </Button>
+            <Button shape="rounded" size="small">
+              <Space>
+                <LikeOutline />
+                <span>点赞</span>
+              </Space>
+            </Button>
+          </div>
+          <span className="tip">如果觉得本篇文章对你有用，请随意赞赏</span>
+        </div>
       </Card>
+      {/* 发表评论 */}
+      <div className="comment">
+        <div className="header-title">
+          <ExclamationCircleOutline />
+          发表评论
+        </div>
+        <Card bodyClassName="comment-card">
+          {/* 评论输入框 */}
+          <Form
+            ref={formRef}
+            layout="horizontal"
+            mode="card"
+            onFinish={(values) => {
+              if (!curUser) {
+                Toast.show({ icon: "fail", content: "请登陆后再进行操作" });
+                setTimeout(() => {
+                  navigate("/login");
+                }, 500);
+              }
+              const data = {
+                ...values,
+                uid: curUser.id,
+                type: "0",
+                contentId: id,
+              };
+
+              saveComment(data).then((resp) => {
+                if (resp.code === 0) {
+                  formRef.current?.resetFields();
+                  Toast.show({ icon: "success", content: "评论成功" });
+                  getComments();
+                }
+              });
+            }}
+            footer={
+              <div className="comment-footer">
+                {curUser ? (
+                  "欢迎您," + curUser.nickname
+                ) : (
+                  <div>
+                    还没有登录,
+                    <Button
+                      color="primary"
+                      fill="none"
+                      onClick={() => {
+                        navigate("/login");
+                      }}
+                    >
+                      请登录
+                    </Button>
+                  </div>
+                )}
+                <Button
+                  type="submit"
+                  color="primary"
+                  size="small"
+                  disabled={!curUser}
+                  shape="rounded"
+                >
+                  提交
+                </Button>
+              </div>
+            }
+          >
+            <Form.Item
+              label="评论"
+              name="content"
+              rules={[{ required: true, message: "请输入评论内容后提交" }]}
+            >
+              <TextArea
+                showCount
+                placeholder="说点什么吧"
+                autoSize={{ minRows: 2, maxRows: 4 }}
+                maxLength={100}
+              />
+            </Form.Item>
+          </Form>
+          {/* 评论列表 */}
+          <List header={`${commentList.length}条评论`}>
+            {commentList.map((item) => (
+              <List.Item
+                key={item.id}
+                prefix={
+                  <Image
+                    src={item.user?.avatar}
+                    style={{ borderRadius: 20 }}
+                    fit="cover"
+                    width={40}
+                    height={40}
+                  />
+                }
+                description={item.content}
+              >
+                {item.user?.nickname}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { Avatar, Button, Collapse, NavBar, Tabs, TextArea } from "antd-mobile";
+import { Avatar, Button, Card, Collapse, Form, Image, List, NavBar, Tabs, TextArea, Toast } from "antd-mobile";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -11,12 +11,21 @@ import Xgplayer from "xgplayer-react";
 import "./index.less";
 import { getVideoById } from "../../../../api/video";
 import { dateFtt } from "../../../../utils/date";
+import { getCommentList, saveComment } from "../../../../api/comment";
 
 export default function Details() {
   const [param] = useSearchParams();
   const id = param.get("id");
   const navigate = useNavigate("");
   const [videoData, setVideoData] = useState({});
+  const formRef = useRef();
+  const curUser = JSON.parse(localStorage.getItem("userInfo"));
+  const [commentList, setCommentList] = useState([]);
+  const getComments = () => {
+    getCommentList({ type: "1", contentId: id }).then((resp) => {
+      setCommentList(resp.data);
+    });
+  };
   useEffect(() => {
     getVideoById(id).then((resp) => {
       setVideoData(resp.data);
@@ -38,7 +47,6 @@ export default function Details() {
   return (
     <div className="video-details">
       <NavBar
-        right={<LinkOutline />}
         back="返回"
         onBack={() => {
           navigate(-1);
@@ -98,14 +106,109 @@ export default function Details() {
           </div>
         </Tabs.Tab>
         <Tabs.Tab title="评论" key="vegetables">
-          <TextArea
+          {/* <TextArea
             defaultValue={"北极星垂地，\n东山月满川。"}
             showCount
             maxLength={30}
           />
           <Button color="primary" fill="solid" size="small">
             发表评论
-          </Button>
+          </Button> */}
+          {/* 发表评论 */}
+          <div className="comment">
+            <Card bodyClassName="comment-card">
+              {/* 评论输入框 */}
+              <Form
+                ref={formRef}
+                layout="horizontal"
+                mode="card"
+                onFinish={(values) => {
+                  if (!curUser) {
+                    Toast.show({ icon: "fail", content: "请登陆后再进行操作" });
+                    setTimeout(() => {
+                      navigate("/login");
+                    }, 500);
+                  }
+                  const data = {
+                    ...values,
+                    uid: curUser.id,
+                    type: "1",
+                    contentId: id,
+                  };
+
+                  saveComment(data).then((resp) => {
+                    if (resp.code === 0) {
+                      formRef.current?.resetFields();
+                      Toast.show({ icon: "success", content: "评论成功" });
+                      getComments();
+                    }
+                  });
+                }}
+                footer={
+                  <div className="comment-footer">
+                    {curUser ? (
+                      "欢迎您," + curUser.nickname
+                    ) : (
+                      <div>
+                        还没有登录,
+                        <Button
+                          color="primary"
+                          fill="none"
+                          onClick={() => {
+                            navigate("/login");
+                          }}
+                        >
+                          请登录
+                        </Button>
+                      </div>
+                    )}
+                    <Button
+                      type="submit"
+                      color="primary"
+                      size="small"
+                      disabled={!curUser}
+                      shape="rounded"
+                    >
+                      提交
+                    </Button>
+                  </div>
+                }
+              >
+                <Form.Item
+                  label="评论"
+                  name="content"
+                  rules={[{ required: true, message: "请输入评论内容后提交" }]}
+                >
+                  <TextArea
+                    showCount
+                    placeholder="说点什么吧"
+                    autoSize={{ minRows: 2, maxRows: 4 }}
+                    maxLength={100}
+                  />
+                </Form.Item>
+              </Form>
+              {/* 评论列表 */}
+              <List header={`${commentList.length}条评论`}>
+                {commentList.map((item) => (
+                  <List.Item
+                    key={item.id}
+                    prefix={
+                      <Image
+                        src={item.user?.avatar}
+                        style={{ borderRadius: 20 }}
+                        fit="cover"
+                        width={40}
+                        height={40}
+                      />
+                    }
+                    description={item.content}
+                  >
+                    {item.user?.nickname}
+                  </List.Item>
+                ))}
+              </List>
+            </Card>
+          </div>
         </Tabs.Tab>
       </Tabs>
     </div>

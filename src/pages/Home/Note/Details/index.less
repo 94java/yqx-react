@@ -42,13 +42,13 @@
       font-size: 14px;
       margin: auto;
       padding: 0;
-      .info{
+      .info {
         display: flex;
         align-items: center;
-        >.adm-avatar{
-            border-radius: 50%;
-            --size:36px;
-            margin-right: 10px;
+        > .adm-avatar {
+          border-radius: 50%;
+          --size: 36px;
+          margin-right: 10px;
         }
       }
       .opt {
@@ -58,6 +58,69 @@
           .antd-mobile-icon {
             margin-right: 6px;
           }
+        }
+      }
+    }
+  }
+  // 底部
+  .footer {
+    .last-time {
+      .antd-mobile-icon {
+        font-size: 14px;
+        margin-right: 6px;
+      }
+      font-size: 12px;
+      color: #ccc;
+    }
+    .opt {
+      display: flex;
+      justify-content: center;
+      .adm-button {
+        margin: 20px 10px;
+        font-size: 14px;
+      }
+    }
+    .tip {
+      display: block;
+      font-size: 12px;
+      color: #ccc;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  }
+
+  // 评论区
+  .comment {
+    // 顶部提示
+    .header-title {
+      font-size: 14px;
+      .antd-mobile-icon {
+        margin-right: 6px;
+      }
+    }
+    // 评论卡片
+    .comment-card {
+      .adm-form {
+        font-size: 12px;
+        --prefix-width: 40px;
+        .adm-list-card{
+          margin: 0;
+        }
+        .adm-form-item-label{
+          font-size: 14px;
+        }
+        .adm-text-area-element{
+          font-size: 14px;
+        }
+        .adm-text-area-count{
+          font-size: 14px;
+        }
+        .comment-footer{
+          display: flex;
+          font-size: 15px;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 10px;
         }
       }
     }

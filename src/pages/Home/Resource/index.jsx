@@ -1,7 +1,10 @@
+import { ErrorBlock } from 'antd-mobile';
 import React from 'react'
 
 export default function Resource() {
   return (
-    <div>Resource</div>
-  )
+    <div>
+      <ErrorBlock status="empty" />
+    </div>
+  );
 }
