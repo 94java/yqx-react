@@ -17,3 +17,13 @@ export function getCommentList(data) {
     data,
   });
 }
+
+// 获取评论数量
+export function getCommentCount(data) {
+  return request({
+    url: `/comment/count`, //请求的接口地址
+    method: "post", //请求的方式
+    data,
+  });
+}
+

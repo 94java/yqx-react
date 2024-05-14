@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  NavBar,
-  Grid,
-  Avatar,
-  Space,
-  List,
-  Dialog,
-  Toast,
-  Button,
-} from "antd-mobile";
+import { NavBar, Grid, Avatar, Space, List, Dialog, Toast } from "antd-mobile";
 import {
   RightOutline,
   FileWrongOutline,
@@ -22,26 +13,39 @@ import { getCurrentUser, logout } from "../../api/user";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { clearUserInfo } from "../../store/modules/user";
+import { getFollowCount } from "../../api/follow";
 export default function Profile() {
   const [userData, setUserData] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  useEffect(() => {
-    const dialog = async () => {
-      const result = await Dialog.confirm({
-        content: "未登录，请先登录",
-      });
-      if (result) {
-        navigate("/login");
-      }
-    };
-    // 判断是否登录
-    if (!localStorage.getItem("token")) {
-      // 未登录，提示登录
-      dialog();
+  const [fansCount, setFansCount] = useState(0);
+  const [followCount, setFollowCount] = useState(0);
+  const dialog = async () => {
+    const result = await Dialog.confirm({
+      content: "未登录，请先登录",
+    });
+    if (result) {
+      navigate("/login");
+    } else {
+      navigate(-1);
     }
+  };
+  useEffect(() => {
     getCurrentUser().then((resp) => {
+      // 判断是否登录
+      if (!resp.data) {
+        // 未登录，提示登录
+        dialog();
+        return;
+      }
       setUserData(resp.data);
+      // 获取用户粉丝数和关注数
+      getFollowCount({ uid: resp.data?.id }).then((resp) => {
+        setFollowCount(resp.data);
+      });
+      getFollowCount({ refUid: resp.data?.id }).then((resp) => {
+        setFansCount(resp.data);
+      });
     });
   }, []);
   return (
@@ -64,11 +68,11 @@ export default function Profile() {
       </div>
       {/* 统计数据 */}
       <Grid className="stats" columns={4} gap={2}>
-        <Grid.Item>
-          <div>12</div>关注
+        <Grid.Item onClick={() => navigate("/user/follow")}>
+          <div>{followCount}</div>关注
         </Grid.Item>
-        <Grid.Item>
-          <div>122</div>粉丝
+        <Grid.Item onClick={() => navigate("/user/fans")}>
+          <div>{fansCount}</div>粉丝
         </Grid.Item>
         <Grid.Item>
           <div>{userData?.visitorCount}</div>访问
@@ -116,7 +120,7 @@ export default function Profile() {
                     <a
                       onClick={() => {
                         navigator.clipboard
-                          .writeText("自媒体后台管理系统")
+                          .writeText("创作者后台管理系统")
                           .then(() => {
                             Toast.show({ content: "已复制网址到剪切板" });
                           })
@@ -128,16 +132,16 @@ export default function Profile() {
                           });
                       }}
                     >
-                      自媒体中心
+                      创作者中心
                     </a>
-                    进行操作操作指引
+                    进行操作
                   </div>
                 </>
               ),
             });
           }}
         >
-          自媒体中心
+          创作者中心
         </List.Item>
         <List.Item onClick={() => {}}>意见反馈</List.Item>
         <List.Item onClick={() => {}}>帮助中心</List.Item>

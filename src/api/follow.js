@@ -18,6 +18,29 @@ export function getFollowCount(data) {
   });
 }
 
+// 获取当前登录用户关注列表
+export function getCurrentFollows() {
+  return request({
+    url: `/follow/getCurrentFollows`, //请求的接口地址
+    method: "get", //请求的方式
+  });
+}
+
+// 查询当前登录用户关注列表（最近活跃 TOP10-动态）
+export function getCurrentFollowsActivity() {
+  return request({
+    url: `/follow/getCurrentFollowsActivity`, //请求的接口地址
+    method: "get", //请求的方式
+  });
+}
+
+// 获取当前登录用户粉丝列表
+export function getCurrentFans() {
+  return request({
+    url: `/follow/getCurrentFans`, //请求的接口地址
+    method: "get", //请求的方式
+  });
+}
 
 // 改变关注状态
 export function changeFollow(data) {

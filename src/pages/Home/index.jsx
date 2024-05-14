@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { SearchOutline } from "antd-mobile-icons";
 import { Avatar, Tabs, Button } from "antd-mobile";
 
 import "./index.less";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { getCurrentUser } from "../../api/user";
 
 export default function Home() {
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname } = location;
-  const userInfo = useSelector((state) => state.user.userInfo);
-
+  const [userInfo, setUserInfo] = useState({});
+  useEffect(() => {
+    getCurrentUser().then((resp) => {
+      setUserInfo(resp.data);
+    });
+  }, []);
   const setRouteActive = (value) => {
     navigate(value);
   };
@@ -30,10 +34,6 @@ export default function Home() {
       key: "/home/video",
       title: "视频",
     },
-    {
-      key: "/home/resource",
-      title: "资源",
-    },
   ];
 
   function goSearch() {
@@ -49,14 +49,11 @@ export default function Home() {
           <span>请输入搜索关键词</span>
         </div>
         <div className="avatar">
-          {localStorage.getItem("userInfo") ? (
+          {userInfo ? (
             <Avatar
-              src={JSON.parse(localStorage.getItem("userInfo"))?.avatar}
+              src={userInfo?.avatar}
               onClick={() => {
-                navigate(
-                  "/user/home?id=" +
-                    JSON.parse(localStorage.getItem("userInfo"))?.id
-                );
+                navigate("/user/home?id=" + userInfo?.id);
               }}
             />
           ) : (

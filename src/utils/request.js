@@ -14,6 +14,8 @@ const dialog = async () => {
   });
   if (result) {
     window.location.href = "/login";
+  } else {
+    window.history.back();
   }
 };
 

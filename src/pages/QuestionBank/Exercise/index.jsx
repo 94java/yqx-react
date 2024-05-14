@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  Dialog,
   Image,
   NavBar,
   Radio,
@@ -17,6 +18,8 @@ import {
 } from "antd-mobile-icons";
 import "./index.less";
 import { getSubjectList } from "../../../api/subject";
+import { saveWrong } from "../../../api/wrong";
+import { getCurrentUser } from "../../../api/user";
 export default function Exercise() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -28,7 +31,29 @@ export default function Exercise() {
   const [isRight, setIsRight] = useState();
   const [rightCount, setRightCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
+  const [userInfo, setUserInfo] = useState({});
+  const dialog = async () => {
+    const result = await Dialog.confirm({
+      content: "未登录，请先登录",
+    });
+    if (result) {
+      navigate("/login");
+    } else {
+      navigate(-1);
+    }
+  };
   useEffect(() => {
+    // 获取用户信息
+    getCurrentUser().then((resp) => {
+      // 判断是否登录
+      if (!resp.data) {
+        // 未登录，提示登录
+        dialog();
+        return;
+      }
+      setUserInfo(resp.data);
+    });
+    // 获取题目集合
     getSubjectList({ bankId, mode }).then((resp) => {
       setSubjectList(resp.data);
     });
@@ -90,9 +115,17 @@ export default function Exercise() {
               });
               if (answer.isRight === "0") {
                 // 回答错误，加入错题本
-                Toast.show({ content: "回答错误，已加入错题本" });
-                setWrongCount(wrongCount + 1);
-                setIsRight("0");
+                saveWrong({
+                  uid: userInfo?.id,
+                  subjectId: subjectList[curIndex].id,
+                  answerId: answer.id,
+                }).then((resp) => {
+                  if (resp.code === 0) {
+                    Toast.show({ content: "回答错误，已加入错题本" });
+                    setWrongCount(wrongCount + 1);
+                    setIsRight("0");
+                  }
+                });
               } else {
                 setIsRight("1");
                 setRightCount(rightCount + 1);

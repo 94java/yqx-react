@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./index.less";
-import { getUserById } from "../../../api/user";
+import { getUserById, updateUserInfo } from "../../../api/user";
 import { getNoteList } from "../../../api/note";
 import { getVideoList } from "../../../api/video";
 import NoteCard from "../../../components/NoteCard";
@@ -24,6 +24,8 @@ export default function UserHome() {
   const [noteList, setNoteList] = useState([]);
   const [videoList, setVideoList] = useState([]);
   const [isFollow, setIsFollow] = useState(false);
+  const [fansCount, setFansCount] = useState(0);
+  const [followCount, setFollowCount] = useState(0);
   const curUser = JSON.parse(localStorage.getItem("userInfo"));
   useEffect(() => {
     getUserById(userId).then((resp) => {
@@ -36,6 +38,21 @@ export default function UserHome() {
           }
         }
       );
+      // 获取用户粉丝数和关注数
+      getFollowCount({ uid: userId }).then((resp) => {
+        setFollowCount(resp.data);
+      });
+      getFollowCount({ refUid: userId }).then((resp) => {
+        setFansCount(resp.data);
+      });
+      // 更新访客数量
+      if (userId !== curUser?.id) {
+        // 不是自己访问自己，访客数+1
+        updateUserInfo({
+          id: userId,
+          visitorCount: +resp.data?.visitorCount + 1,
+        });
+      }
     });
     getNoteList({ userId }).then((resp) => {
       setNoteList(resp.data);
@@ -67,15 +84,21 @@ export default function UserHome() {
         <p className="nickname">{userData?.nickname}</p>
         <p className="sign">{userData?.sign}</p>
         <div className="meta">
-          <span>粉丝: 32</span>
+          <span>粉丝: {fansCount}</span>
           <Divider direction="vertical" />
-          <span>关注: 321</span>
+          <span>关注: {followCount}</span>
           <Divider direction="vertical" />
-          <span>访客数: 3222</span>
+          <span>访客数: {userData?.visitorCount}</span>
         </div>
         <div className="opt">
           {userId === curUser?.id ? (
-            <Button color="primary" fill="outline" size="small" block>
+            <Button
+              color="primary"
+              fill="outline"
+              size="small"
+              block
+              onClick={() => navigate("/user/update")}
+            >
               编辑资料
             </Button>
           ) : (

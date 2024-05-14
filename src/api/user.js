@@ -44,6 +44,15 @@ export function getCurrentUser() {
   });
 }
 
+// 修改用户信息
+export function updateUserInfo(data) {
+  return request({
+    url: `/user/update`, //请求的接口地址
+    method: "post", //请求的方式
+    data,
+  });
+}
+
 // 获取用户详情
 export function getUserById(id) {
   return request({

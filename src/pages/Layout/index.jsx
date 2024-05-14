@@ -31,7 +31,7 @@ export default function Layout() {
       icon: <AntOutline />,
     },
     {
-      key: 'news',
+      key: 'popular',
       title: '动态',
       icon: <CompassOutline />,
     },

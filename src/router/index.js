@@ -1,13 +1,12 @@
 import { Navigate } from "react-router-dom";
 import Home from "../pages/Home";
 import Layout from "../pages/Layout";
-import News from "../pages/News";
+import Popular from "../pages/Popular";
 import Profile from "../pages/Profile";
 import QuestionBank from "../pages/QuestionBank";
 import Recommend from "../pages/Home/Recommend";
 import Note from "../pages/Home/Note";
 import Video from "../pages/Home/Video";
-import Resource from "../pages/Home/Resource";
 import Search from "../pages/Home/Search";
 import QuestionDetail from "../pages/QuestionBank/Detail";
 import Details from "../pages/Home/Note/Details";
@@ -15,7 +14,11 @@ import VideoDetails from "../pages/Home/Video/Details";
 import UserDetails from "../pages/Profile/Home";
 import Login from "../pages/Login";
 import Exercise from "../pages/QuestionBank/Exercise";
-
+import Add from "../pages/Popular/Add";
+import Follow from "../pages/Profile/Follow";
+import Fans from "../pages/Profile/Fans";
+import UpdateInfo from "../pages/Profile/UpdateInfo";
+import PopularDetails from "../pages/Popular/Details";
 const routes = [
   {
     path: "/",
@@ -38,10 +41,6 @@ const routes = [
             element: <Video />,
           },
           {
-            path: "resource",
-            element: <Resource />,
-          },
-          {
             path: "",
             element: <Navigate to="/home/recommend" />,
           },
@@ -52,8 +51,8 @@ const routes = [
         element: <QuestionBank />,
       },
       {
-        path: "news",
-        element: <News />,
+        path: "popular",
+        element: <Popular />,
       },
       {
         path: "profile",
@@ -91,8 +90,29 @@ const routes = [
     element: <Exercise />,
   },
   {
+    path: "/popular/details",
+    element: <PopularDetails />,
+  },
+  {
     path: "/user/home",
     element: <UserDetails />,
+  },
+  {
+    path: "/user/follow",
+    element: <Follow />,
+  },
+  {
+    path: "/user/fans",
+    element: <Fans />,
+  },
+  {
+    path: "/user/update",
+    element: <UpdateInfo />,
+  },
+  { path: "/popular/add", element: <Add /> },
+  {
+    path: "*",
+    element: <Navigate to="/home" />,
   },
 ];
 
