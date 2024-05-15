@@ -24,11 +24,18 @@ import {
 } from "antd-mobile-icons";
 import Xgplayer from "xgplayer-react";
 import "./index.less";
-import { getVideoById } from "../../../../api/video";
+import {
+  getVideoById,
+  getVideoByItemCF,
+  getVideoList,
+} from "../../../../api/video";
 import { dateFtt } from "../../../../utils/date";
 import { getCommentList, saveComment } from "../../../../api/comment";
 import { changeFollow, getFollowCount } from "../../../../api/follow";
 import { changeLikes } from "../../../../api/likes";
+import Wrap from "../../../../components/Wrap";
+import VideoCard from "../../../../components/VideoCard";
+import { getRecommendVideo } from "../../../../api/home";
 
 export default function Details() {
   const [param] = useSearchParams();
@@ -40,6 +47,9 @@ export default function Details() {
   const [isFollow, setIsFollow] = useState(false);
   const [isLike, setIsLike] = useState(false);
   const [commentList, setCommentList] = useState([]);
+  // 相关推荐视频数据
+  const [recommendVideos, setRecommendVideos] = useState([]);
+
   const getComments = () => {
     getCommentList({ type: "1", contentId: id }).then((resp) => {
       setCommentList(resp.data);
@@ -81,6 +91,10 @@ export default function Details() {
       setIsLike(resp.data.like);
       // 保存浏览记录
       saveHistory(resp.data);
+      // 获取相关推荐
+      getVideoByItemCF(id).then((resp) => {
+        setRecommendVideos(resp.data || []);
+      });
     });
 
     // 获取评论信息
@@ -101,6 +115,10 @@ export default function Details() {
     poster: videoData.coverImg,
   };
   let Player = null;
+  // 相关推荐
+  const recommendVideoItems = recommendVideos?.map((item) => (
+    <VideoCard data={item} key={item.id} />
+  ));
   return (
     <div className="video-details">
       <NavBar
@@ -222,6 +240,19 @@ export default function Details() {
               </span>
             </div>
           </div>
+          {/* 相关推荐 */}
+          {recommendVideos.length > 0 ? (
+            <Wrap
+              title="猜您喜欢"
+              more
+              className="recommend-video"
+              to="/home/video"
+            >
+              {recommendVideoItems}
+            </Wrap>
+          ) : (
+            ""
+          )}
         </Tabs.Tab>
         <Tabs.Tab title="评论" key="vegetables">
           {/* 发表评论 */}

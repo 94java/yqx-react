@@ -19,7 +19,6 @@ import { useNavigate } from "react-router-dom";
 import { getCurrentFollowPopularList } from "../../api/popular";
 import { formatPast } from "../../utils/date";
 import { getCurrentFollowsActivity } from "../../api/follow";
-import { getCurrentUser } from "../../api/user";
 import { changeLikes } from "../../api/likes";
 
 export default function News() {
@@ -29,28 +28,7 @@ export default function News() {
   const navigate = useNavigate();
   const [activeUsers, setActiveUsers] = useState([]);
 
-  const dialog = async () => {
-    const result = await Dialog.confirm({
-      content: "未登录，请先登录",
-    });
-    if (result) {
-      navigate("/login");
-    } else {
-      navigate(-1);
-    }
-  };
-
   useEffect(() => {
-    // 获取当前用户
-    getCurrentUser().then((resp) => {
-      // 判断是否登录
-      if (!resp.data) {
-        // 未登录，提示登录
-        dialog();
-        return;
-      }
-    });
-
     // 获取最近活跃用户信息
     getCurrentFollowsActivity().then((resp) => {
       setActiveUsers(resp.data);

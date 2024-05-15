@@ -12,8 +12,8 @@ export function getSwipper() {
 export function getRecommendVideo() {
   return request({
     url: `/video/recommend`, //请求的接口地址
-    method: 'get', //请求的方式
-  })
+    method: "get", //请求的方式
+  });
 }
 
 // 获取活跃用户信息
