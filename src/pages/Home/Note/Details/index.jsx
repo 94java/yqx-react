@@ -73,6 +73,23 @@ export default function Details() {
       setCommentList(resp.data);
     });
   };
+  const saveHistory = (data) => {
+    let history = localStorage.getItem("history-note");
+    if (!history) {
+      // 无记录
+      localStorage.setItem("history-note", JSON.stringify([data]));
+    } else {
+      // 添加（需要去重）
+      let record = JSON.parse(history);
+      let index = record.findIndex((item) => item.id === data.id);
+      if (index !== -1) {
+        // 已存在该记录，删除
+        record.splice(index, 1);
+      }
+      record.push(data);
+      localStorage.setItem("history-note", JSON.stringify(record));
+    }
+  };
   useEffect(() => {
     // 返回顶部
     window.scrollTo(0, 0);
@@ -90,6 +107,8 @@ export default function Details() {
       );
       // 获取点赞信息
       setIsLike(resp.data.like);
+      // 保存浏览记录
+      saveHistory(resp.data);
     });
     // 获取评论信息
     getComments();

@@ -15,6 +15,9 @@ import "./index.less";
 import { getPopularDetails } from "../../../api/popular";
 import { formatPast } from "../../../utils/date";
 import { getCommentList, saveComment } from "../../../api/comment";
+import { changeFollow, getFollowCount } from "../../../api/follow";
+import { CheckOutline } from "antd-mobile-icons";
+
 export default function Details() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -24,10 +27,19 @@ export default function Details() {
   const [commentList, setCommentList] = useState([]);
   const curUser = JSON.parse(localStorage.getItem("userInfo"));
   const formRef = useRef();
+  const [isFollow, setIsFollow] = useState(false);
   useEffect(() => {
     // 获取动态信息
     getPopularDetails(popularId).then((resp) => {
       setPopularInfo(resp.data);
+      // 获取关注信息
+      getFollowCount({ uid: curUser?.id, refUid: resp.data?.user?.id }).then(
+        (resp) => {
+          if (resp.data > 0) {
+            setIsFollow(true);
+          }
+        }
+      );
     });
     // 获取评论信息
     getComments();
@@ -55,9 +67,37 @@ export default function Details() {
               </div>
             </div>
           </div>
-          <div className="opt">
-            <Button color="primary" size="small" fill="none">
-              关注
+          <div
+            className="opt"
+            hidden={curUser?.id === popularInfo.user?.id ? true : false}
+          >
+            <Button
+              color="primary"
+              size="small"
+              fill="none"
+              onClick={async () => {
+                const resp = await changeFollow({
+                  uid: curUser?.id,
+                  refUid: popularInfo.user?.id,
+                });
+                if (resp.code !== 0) {
+                  // 发生错误
+                  return;
+                }
+                setIsFollow((pre) => !pre);
+                Toast.show({ content: "操作成功" });
+              }}
+            >
+              {isFollow ? (
+                <>
+                  <CheckOutline />
+                  <span>已关注</span>
+                </>
+              ) : (
+                <>
+                  <span>关注</span>
+                </>
+              )}
             </Button>
           </div>
         </div>

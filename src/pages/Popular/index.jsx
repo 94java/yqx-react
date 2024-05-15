@@ -8,6 +8,7 @@ import {
   Selector,
   ErrorBlock,
   Dialog,
+  Toast,
 } from "antd-mobile";
 import Wrap from "../../components/Wrap";
 import LateralSlip from "../../components/LateralSlip";
@@ -19,11 +20,12 @@ import { getCurrentFollowPopularList } from "../../api/popular";
 import { formatPast } from "../../utils/date";
 import { getCurrentFollowsActivity } from "../../api/follow";
 import { getCurrentUser } from "../../api/user";
+import { changeLikes } from "../../api/likes";
 
 export default function News() {
   const [sort, setSort] = useState("0");
   const [popularList, setPopularList] = useState([]);
-
+  const curUser = JSON.parse(localStorage.getItem("userInfo"));
   const navigate = useNavigate();
   const [activeUsers, setActiveUsers] = useState([]);
 
@@ -61,6 +63,29 @@ export default function News() {
       }
     });
   }, []);
+
+  const handleLikes = async (item) => {
+    // 执行后端
+    const resp = await changeLikes({
+      uid: curUser?.id,
+      contentId: item?.id,
+      type: "2",
+    });
+    if (resp.code !== 0) {
+      // 发生错误
+      return;
+    }
+    // 修改 item 的 Like 属性
+    item.like = !item.like;
+    // 找到该项在数组中的索引
+    const index = popularList.findIndex((o) => o.id === item.id);
+    // 创建 popularList 的副本并更新该索引的项
+    const updatedPopularList = [...popularList];
+    updatedPopularList[index] = item;
+    // 使用更新后的数组设置状态
+    setPopularList(updatedPopularList);
+    Toast.show({ content: "操作成功" });
+  };
 
   // 活跃用户
   const activeUserItems = activeUsers
@@ -114,7 +139,21 @@ export default function News() {
         {item.content}
       </div>
       <div className="footer">
-        <div>
+        <div
+          onClick={() => {
+            const baseUrl = `${window.location.protocol}//${
+              window.location.hostname
+            }${window.location.port ? `:${window.location.port}` : ""}`;
+            navigator.clipboard
+              .writeText(baseUrl + "/popular/details?id=" + item.id)
+              .then(() => {
+                Toast.show({ content: "已复制网址到剪切板" });
+              })
+              .catch((error) => {
+                console.error("Failed to write to clipboard:", error);
+              });
+          }}
+        >
           <SendOutline />
           分享
         </div>
@@ -122,9 +161,9 @@ export default function News() {
           <MessageOutline />
           {item.commentCount}
         </div>
-        <div>
-          <LikeOutline />
-          点赞
+        <div onClick={() => handleLikes(item)}>
+          <LikeOutline color={item.like ? "var(--adm-color-primary)" : ""} />
+          {item.like ? "已赞" : "点赞"}
         </div>
       </div>
     </List.Item>
@@ -165,6 +204,21 @@ export default function News() {
                 onChange={(v) => {
                   if (v.length) {
                     setSort(v[0]);
+                  }
+                  if (sort === "1") {
+                    // 最新排序
+                    setPopularList(
+                      popularList.sort((a, b) => {
+                        return new Date(b.updateTime) - new Date(a.updateTime);
+                      })
+                    );
+                  } else {
+                    // 热门排序
+                    setPopularList(
+                      popularList.sort((a, b) => {
+                        return b.commentCount - a.commentCount;
+                      })
+                    );
                   }
                 }}
               ></Selector>

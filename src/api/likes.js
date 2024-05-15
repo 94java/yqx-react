@@ -18,6 +18,15 @@ export function getLikesCount(data) {
   });
 }
 
+// 获取点赞列表
+export function getLikesList(data) {
+  return request({
+    url: `/likes/list`, //请求的接口地址
+    method: "post", //请求的方式
+    data,
+  });
+}
+
 // 改变点赞状态
 export function changeLikes(data) {
   return request({

@@ -9,7 +9,7 @@ import {
 } from "antd-mobile-icons";
 
 import "./index.less";
-import { getCurrentUser, logout } from "../../api/user";
+import { getCurrentUser, getUserRange, logout } from "../../api/user";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { clearUserInfo } from "../../store/modules/user";
@@ -19,6 +19,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [fansCount, setFansCount] = useState(0);
+  const [range, setRange] = useState(0);
   const [followCount, setFollowCount] = useState(0);
   const dialog = async () => {
     const result = await Dialog.confirm({
@@ -45,6 +46,10 @@ export default function Profile() {
       });
       getFollowCount({ refUid: resp.data?.id }).then((resp) => {
         setFansCount(resp.data);
+      });
+      // 获取用户排名
+      getUserRange(resp.data?.id).then((resp) => {
+        setRange(resp.data);
       });
     });
   }, []);
@@ -74,24 +79,36 @@ export default function Profile() {
         <Grid.Item onClick={() => navigate("/user/fans")}>
           <div>{fansCount}</div>粉丝
         </Grid.Item>
-        <Grid.Item>
-          <div>{userData?.visitorCount}</div>访问
+        <Grid.Item onClick={() => navigate("/user/visitor")}>
+          <div>{userData?.visitorCount}</div>访客
         </Grid.Item>
         <Grid.Item>
-          <div>1</div>排名
+          <div>{range}</div>排名
         </Grid.Item>
       </Grid>
       {/* 用户菜单-错题本、点赞、历史记录 */}
       <Grid className="user-nav" columns={3} gap={2}>
-        <Grid.Item>
+        <Grid.Item
+          onClick={() => {
+            navigate("/question-bank/wrong");
+          }}
+        >
           <FileWrongOutline />
           <div>错题本</div>
         </Grid.Item>
-        <Grid.Item>
+        <Grid.Item
+          onClick={() => {
+            navigate("/user/likes");
+          }}
+        >
           <HeartOutline />
           <div>点赞</div>
         </Grid.Item>
-        <Grid.Item>
+        <Grid.Item
+          onClick={() => {
+            navigate("/user/history");
+          }}
+        >
           <ClockCircleOutline />
           <div>历史</div>
         </Grid.Item>

@@ -46,13 +46,13 @@ export default function UserHome() {
         setFansCount(resp.data);
       });
       // 更新访客数量
-      if (userId !== curUser?.id) {
-        // 不是自己访问自己，访客数+1
-        updateUserInfo({
-          id: userId,
-          visitorCount: +resp.data?.visitorCount + 1,
-        });
-      }
+      // if (userId !== curUser?.id) {
+      //   // 不是自己访问自己，访客数+1
+      //   updateUserInfo({
+      //     id: userId,
+      //     visitorCount: +resp.data?.visitorCount + 1,
+      //   });
+      // }
     });
     getNoteList({ userId }).then((resp) => {
       setNoteList(resp.data);

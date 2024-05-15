@@ -18,7 +18,7 @@ import {
 } from "antd-mobile-icons";
 import "./index.less";
 import { getSubjectList } from "../../../api/subject";
-import { saveWrong } from "../../../api/wrong";
+import { changeWrongCount, getWrongList, saveWrong } from "../../../api/wrong";
 import { getCurrentUser } from "../../../api/user";
 export default function Exercise() {
   const navigate = useNavigate();
@@ -54,9 +54,27 @@ export default function Exercise() {
       setUserInfo(resp.data);
     });
     // 获取题目集合
-    getSubjectList({ bankId, mode }).then((resp) => {
-      setSubjectList(resp.data);
-    });
+    if (mode === "3") {
+      // 错题训练，从错题本查询错题
+      const res = {
+        uid: userInfo.id,
+        bankId,
+      };
+      getWrongList(res).then((resp) => {
+        let subList = [];
+        resp.data.forEach((item) => {
+          item.subject.wrongCount = item.wrongCount;
+          item.subject.wrongTime = item.createTime;
+          subList.push(item.subject);
+        });
+        console.log(subList);
+        setSubjectList(subList);
+      });
+    } else {
+      getSubjectList({ bankId, mode }).then((resp) => {
+        setSubjectList(resp.data);
+      });
+    }
   }, []);
   return (
     <div className="exercise">
@@ -66,9 +84,12 @@ export default function Exercise() {
           navigate(-1);
         }}
       >
-        题库训练
+        {mode === "3" ? "错题专练" : "题库训练"}
       </NavBar>
-      <div className="header">
+      <div
+        className="header"
+        style={{ display: mode === "3" ? "none" : "flex" }}
+      >
         <div className="num">
           <CheckCircleFill color="green" />
           {rightCount}
@@ -91,6 +112,7 @@ export default function Exercise() {
             : subjectList[curIndex]?.type === "1"
             ? "【多选题】"
             : "【填空题】"}
+          {mode === "3" ? `错误次数：${subjectList[curIndex]?.wrongCount}` : ""}
         </div>
         {/* 题目内容 */}
         <div className="sub-content">
@@ -117,6 +139,7 @@ export default function Exercise() {
                 // 回答错误，加入错题本
                 saveWrong({
                   uid: userInfo?.id,
+                  bankId,
                   subjectId: subjectList[curIndex].id,
                   answerId: answer.id,
                 }).then((resp) => {
@@ -127,6 +150,22 @@ export default function Exercise() {
                   }
                 });
               } else {
+                // 回答正确
+                // 如果是错题训练，则错题次数减一
+                if (mode === "3") {
+                  changeWrongCount({
+                    uid: userInfo?.id,
+                    subjectId: subjectList[curIndex].id,
+                    bankId,
+                  }).then((resp) => {
+                    if (resp.data <= 0) {
+                      // 错题已经移除
+                      Toast.show({ content: "错题次数减为0，已从错题本移除" });
+                      subjectList.splice(curIndex, 1);
+                      setSubjectList(subjectList);
+                    }
+                  });
+                }
                 setIsRight("1");
                 setRightCount(rightCount + 1);
               }

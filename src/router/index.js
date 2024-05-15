@@ -19,6 +19,10 @@ import Follow from "../pages/Profile/Follow";
 import Fans from "../pages/Profile/Fans";
 import UpdateInfo from "../pages/Profile/UpdateInfo";
 import PopularDetails from "../pages/Popular/Details";
+import Visitor from "../pages/Profile/Visitor";
+import Wrong from "../pages/QuestionBank/Wrong";
+import Likes from "../pages/Profile/Likes";
+import History from "../pages/Profile/History";
 const routes = [
   {
     path: "/",
@@ -90,6 +94,10 @@ const routes = [
     element: <Exercise />,
   },
   {
+    path: "/question-bank/wrong",
+    element: <Wrong />,
+  },
+  {
     path: "/popular/details",
     element: <PopularDetails />,
   },
@@ -104,6 +112,18 @@ const routes = [
   {
     path: "/user/fans",
     element: <Fans />,
+  },
+  {
+    path: "/user/visitor",
+    element: <Visitor />,
+  },
+  {
+    path: "/user/likes",
+    element: <Likes />,
+  },
+  {
+    path: "/user/history",
+    element: <History />,
   },
   {
     path: "/user/update",

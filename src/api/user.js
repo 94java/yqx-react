@@ -44,6 +44,23 @@ export function getCurrentUser() {
   });
 }
 
+// 获取用户排名
+export function getUserRange(id) {
+  return request({
+    url: `/user/getRange`, //请求的接口地址
+    method: "get", //请求的方式
+    params: { id },
+  });
+}
+
+// 获取当前用户访客信息
+export function getCurrentVistor() {
+  return request({
+    url: `/user/currentVistor`, //请求的接口地址
+    method: "get", //请求的方式
+  });
+}
+
 // 修改用户信息
 export function updateUserInfo(data) {
   return request({
