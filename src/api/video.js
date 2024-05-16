@@ -27,9 +27,9 @@ export function getVideoById(id) {
 }
 
 // 获取推荐视频信息
-export function getVideoByItemCF(id) {
+export function getVideoByUserCF(id) {
   return request({
-    url: `/video/getVideoByItemCF`, //请求的接口地址
+    url: `/video/getVideoByUserCF`, //请求的接口地址
     method: "get", //请求的方式
     params: { videoId: id },
   });

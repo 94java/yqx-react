@@ -151,9 +151,13 @@ export default function News() {
     <div className="news">
       <NavBar backArrow={false}>动态</NavBar>
       {/* 最近活跃 TOP10 */}
-      <Wrap title="最近活跃">
-        <LateralSlip>{activeUserItems}</LateralSlip>
-      </Wrap>
+      {activeUsers.length > 0 ? (
+        <Wrap title="最近活跃">
+          <LateralSlip>{activeUserItems}</LateralSlip>
+        </Wrap>
+      ) : (
+        ""
+      )}
       {popularList.length > 0 ? (
         <List
           header={

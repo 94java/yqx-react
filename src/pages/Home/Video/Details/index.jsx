@@ -27,6 +27,7 @@ import "./index.less";
 import {
   getVideoById,
   getVideoByItemCF,
+  getVideoByUserCF,
   getVideoList,
 } from "../../../../api/video";
 import { dateFtt } from "../../../../utils/date";
@@ -92,7 +93,7 @@ export default function Details() {
       // 保存浏览记录
       saveHistory(resp.data);
       // 获取相关推荐
-      getVideoByItemCF(id).then((resp) => {
+      getVideoByUserCF(id).then((resp) => {
         setRecommendVideos(resp.data || []);
       });
     });

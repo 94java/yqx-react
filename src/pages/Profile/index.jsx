@@ -137,9 +137,11 @@ export default function Profile() {
                     <a
                       onClick={() => {
                         navigator.clipboard
-                          .writeText("创作者后台管理系统")
+                          .writeText("http://admin.jiusi.cc")
                           .then(() => {
-                            Toast.show({ content: "已复制网址到剪切板" });
+                            Toast.show({
+                              content: "已复制网址到剪切板，请前往电脑端访问",
+                            });
                           })
                           .catch((error) => {
                             console.error(
@@ -160,8 +162,34 @@ export default function Profile() {
         >
           创作者中心
         </List.Item>
-        <List.Item onClick={() => {}}>意见反馈</List.Item>
-        <List.Item onClick={() => {}}>帮助中心</List.Item>
+        <List.Item
+          onClick={() => {
+            navigator.clipboard
+              .writeText("lh668667")
+              .then(() => {
+                Toast.show({ content: "已复制开发者微信到剪切板" });
+              })
+              .catch((error) => {
+                console.error("Failed to write to clipboard:", error);
+              });
+          }}
+        >
+          意见反馈
+        </List.Item>
+        <List.Item
+          onClick={() => {
+            navigator.clipboard
+              .writeText("lh668667")
+              .then(() => {
+                Toast.show({ content: "已复制开发者微信到剪切板" });
+              })
+              .catch((error) => {
+                console.error("Failed to write to clipboard:", error);
+              });
+          }}
+        >
+          帮助中心
+        </List.Item>
         <List.Item
           onClick={() => {
             logout().then((resp) => {
