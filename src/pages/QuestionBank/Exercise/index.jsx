@@ -125,7 +125,7 @@ export default function Exercise() {
             ))}
         </div>
         {subjectList[curIndex]?.contentImg && (
-          <Image src={subjectList[curIndex]?.contentImg} height={200} />
+          <Image src={subjectList[curIndex]?.contentImg} height={134} />
         )}
         {/* 选项 */}
         <div className="answer">

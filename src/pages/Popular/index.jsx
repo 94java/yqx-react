@@ -151,7 +151,7 @@ export default function News() {
     <div className="news">
       <NavBar backArrow={false}>动态</NavBar>
       {/* 最近活跃 TOP10 */}
-      {activeUsers.length > 0 ? (
+      {activeUsers?.length > 0 ? (
         <Wrap title="最近活跃">
           <LateralSlip>{activeUserItems}</LateralSlip>
         </Wrap>

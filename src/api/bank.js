@@ -8,7 +8,14 @@ export function getBankPage(data) {
     data: { ...data, status: "1" },
   });
 }
-
+// 获取题库列表
+export function getBankList(data) {
+  return request({
+    url: `/questionBank/list`, //请求的接口地址
+    method: "post", //请求的方式
+    data: { ...data, status: "1" },
+  });
+}
 // 获取题库详情
 export function getBankById(id) {
   return request({

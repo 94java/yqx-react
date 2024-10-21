@@ -1,7 +1,6 @@
 //引入axios
 import axios from "axios";
 import { Dialog, Toast } from "antd-mobile";
-import { useNavigate } from "react-router-dom";
 
 // // cdn域名
 // const baseFileUrl = 'http://images.jiusi.cc'
@@ -21,7 +20,7 @@ const dialog = async () => {
 
 const axiosEp = axios.create({
   //base接口，表示请求URL的公共部分
-  baseURL: "http://127.0.0.1:8866/api/",
+  baseURL: "http://localhost:8866/api/",
   // 超时
   timeout: 30000,
   withCredentials: true,

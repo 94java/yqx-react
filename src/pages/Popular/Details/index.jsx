@@ -57,7 +57,12 @@ export default function Details() {
       </NavBar>
       <div className="main">
         <div className="header">
-          <div className="user-info">
+          <div
+            className="user-info"
+            onClick={() => {
+              navigate("/user/home?id=" + popularInfo.user?.id);
+            }}
+          >
             <Avatar src={popularInfo.user?.avatar} />
             <div className="meta">
               <div className="nickname">{popularInfo.user?.nickname}</div>

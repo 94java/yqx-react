@@ -37,8 +37,6 @@ import gfm from "@bytemd/plugin-gfm";
 import frontmatter from "@bytemd/plugin-frontmatter";
 import breaks from "@bytemd/plugin-breaks";
 import highlight from "@bytemd/plugin-highlight";
-import math from "@bytemd/plugin-math";
-import mediumZoom from "@bytemd/plugin-medium-zoom";
 import mermaid from "@bytemd/plugin-mermaid";
 import { dateFtt } from "../../../../utils/date";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -51,8 +49,6 @@ const plugins = [
   frontmatter(),
   highlight(),
   breaks(),
-  math(),
-  mediumZoom(),
   mermaid(),
   // Add more plugins here
 ];

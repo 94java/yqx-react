@@ -19,7 +19,7 @@ import {
 import "./index.less";
 import { useNavigate } from "react-router-dom";
 import { getCategoryList } from "../../api/category";
-import { getBankPage } from "../../api/bank";
+import { getBankList } from "../../api/bank";
 import { dateFtt } from "../../utils/date";
 export default function QuestionBank() {
   const navigate = useNavigate();
@@ -44,12 +44,12 @@ export default function QuestionBank() {
       resp.data.unshift({ id: "", name: "全部题库" });
       setCategoryList(resp.data);
     });
-    getBankList();
+    queryList();
   }, []);
 
-  const getBankList = (data) => {
-    getBankPage(data).then((resp) => {
-      setBankList(resp.data.list);
+  const queryList = (data) => {
+    getBankList(data).then((resp) => {
+      setBankList(resp.data);
     });
   };
 
@@ -67,6 +67,23 @@ export default function QuestionBank() {
   // 排序方式变更
   function handleSortChange(val) {
     setState((pre) => ({ ...pre, sortTitle: sortList[val].title }));
+    console.log(val);
+    if (val === '0') {
+      // 默认
+      queryList();
+    } else if (val === '1') {
+      // 难度
+      setBankList(
+        bankList.sort((a, b) => {
+          return a.difficulty - b.difficulty;
+        })
+      );
+    } else if (val === '2') {
+      // 题量
+      bankList.sort((a, b) => {
+        return b.count - a.count;
+      });
+    }
     dropRef.current?.close();
   }
 
@@ -123,7 +140,7 @@ export default function QuestionBank() {
           description={
             <>
               <EyeOutline /> {item.views}
-              <LinkOutline /> 1231
+              <LinkOutline /> {item.count}
               {/* <LikeOutline /> {item.like} */}
               <ClockCircleOutline />{" "}
               {dateFtt("yyyy-MM-dd HH:mm:ss", new Date(item.updateTime))}

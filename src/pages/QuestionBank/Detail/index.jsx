@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { NavBar, Card, Image } from "antd-mobile";
 import {
-  LikeOutline,
   EyeOutline,
-  LinkOutline,
   ClockCircleOutline,
   HistogramOutline,
   PieOutline,
@@ -36,34 +34,36 @@ export default function Detail() {
   };
   return (
     <div className="question-bank-detail">
-      <NavBar back="返回" onBack={() => goBack()}>题库详情</NavBar>
+      <NavBar back="返回" onBack={() => goBack()}>
+        题库详情
+      </NavBar>
       {/* 题库信息 */}
       <Card bodyClassName="bank-info">
-        <Image src={bankData.coverImg} className="bank-pic" />
+        <Image src={bankData?.coverImg} className="bank-pic" />
         <div className="base-info">
-          <h3 className="bank-title">{bankData.name}</h3>
-          <p className="desc">{bankData.summary}</p>
+          <h3 className="bank-title">{bankData?.name}</h3>
+          <p className="desc">{bankData?.summary}</p>
           <div>
             <span className="title">难度:</span>
-            {bankData.difficulty === "0"
+            {bankData?.difficulty === "0"
               ? "简单"
-              : bankData.difficulty === "1"
+              : bankData?.difficulty === "1"
               ? "一般"
               : "困难"}
           </div>
           <div>
             <span className="title">分类:</span>
-            {bankData.category?.name}
+            {bankData?.category?.name}
           </div>
           <div>
-            <span className="title">题目总数:</span>13
+            <span className="title">题目总数:</span>
+            {bankData?.count}
           </div>
           <div className="meta">
-            <EyeOutline /> {bankData.views}
-            <LinkOutline /> 23
+            <EyeOutline /> {bankData?.views}
             {/* <LikeOutline /> 12 */}
             <ClockCircleOutline />{" "}
-            {dateFtt("yyyy-MM-dd HH:mm:ss", new Date(bankData.updateTime))}
+            {dateFtt("yyyy-MM-dd HH:mm:ss", new Date(bankData?.updateTime))}
           </div>
         </div>
       </Card>
